@@ -87,7 +87,7 @@ public class TabLib {
 		}
 	}
 
-	public TabPagenatedItems getMyFollowingItems(Context cont) throws JSONException, IOException, URISyntaxException {
+/*	public TabPagenatedItems getMyFollowingItems(Context cont) throws JSONException, IOException, URISyntaxException {
 		String userid = cont.getSharedPreferences(preferenceFileName, Context.MODE_PRIVATE).getString("user_id", null);
 		if (userid != null) {
 			JSONObject obj = getResult("http://tab.do/api/1/users/" + userid + "/items.json");
@@ -98,7 +98,7 @@ public class TabLib {
 		} else {
 			return null;
 		}
-	}
+	}*/
 
 	public TabBasicList getMyOwnTabs(Context cont) throws JSONException, IOException, URISyntaxException {
 		String userid = cont.getSharedPreferences(preferenceFileName, Context.MODE_PRIVATE).getString("user_id", null);
