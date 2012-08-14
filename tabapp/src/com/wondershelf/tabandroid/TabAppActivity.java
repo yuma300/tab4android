@@ -622,7 +622,7 @@ public class TabAppActivity extends MapActivity implements LocationListener, OnI
 		menu.add(0 , Menu.FIRST +2, Menu.NONE , "検索");
 		menu.add(0 , Menu.FIRST + 3 ,Menu.NONE , "設定");
 		menu.add(0 , Menu.FIRST + 4 ,Menu.NONE , "ログイン");
-		menu.add(0 , Menu.FIRST + 5 ,Menu.NONE , "お気に入り");
+		menu.add(0 , Menu.FIRST + 5 ,Menu.NONE , "プロファイル");
 		return ret;
 	}
 	

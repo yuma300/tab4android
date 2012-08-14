@@ -11,9 +11,11 @@ import com.wondershelf.tablib.TabBasicList;
 import com.wondershelf.tablib.TabLib;
 import com.wondershelf.tablib.TabPagenatedItem;
 import com.wondershelf.tablib.TabPagenatedItems;
+import com.wondershelf.tablib.misc.NotLoginException;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -40,7 +42,8 @@ public class TabAppProfileActivity extends Activity {
 		
 		TabLib lib = new TabLib();
 		try {
-			TabBasicList items = lib.getMyOwnTabs(this);
+			TabBasicList items;
+			items = lib.getMyOwnTabs(this);
 
 			adapter = new TabStreamAdapter(this, R.layout.searchlistitem, items.getItems());
 			itemlist.setAdapter((ArrayAdapter)adapter);
@@ -53,6 +56,11 @@ public class TabAppProfileActivity extends Activity {
 			e.printStackTrace();
 		} catch (URISyntaxException e) {
 			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (NotLoginException e) {
+			//ログインしていない
+			Intent intent = new Intent(this, TabAppAuthActivity.class);
+			startActivity(intent);
 			e.printStackTrace();
 		}
 	}

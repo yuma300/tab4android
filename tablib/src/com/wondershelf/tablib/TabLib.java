@@ -20,6 +20,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.wondershelf.tablib.auth.TabAppAuthWebViewClient;
+import com.wondershelf.tablib.misc.NotLoginException;
 
 import android.content.Context;
 import android.content.Intent;
@@ -74,7 +75,7 @@ public class TabLib {
 		return new TabPagenatedItems(obj);
 	}
 
-	public TabPagenatedItems getMyFollowingItems(Context cont) throws JSONException, IOException, URISyntaxException {
+	public TabPagenatedItems getMyFollowingItems(Context cont) throws JSONException, IOException, URISyntaxException, NotLoginException {
 		String userid = cont.getSharedPreferences(preferenceFileName, Context.MODE_PRIVATE).getString("user_id", null);
 		if (userid != null) {
 			JSONObject obj = getResult("http://tab.do/api/1/users/" + userid + "/items.json");
@@ -83,7 +84,7 @@ public class TabLib {
 			}
 			return new TabPagenatedItems(obj);
 		} else {
-			return null;
+			throw new NotLoginException();
 		}
 	}
 
@@ -100,7 +101,7 @@ public class TabLib {
 		}
 	}*/
 
-	public TabBasicList getMyOwnTabs(Context cont) throws JSONException, IOException, URISyntaxException {
+	public TabBasicList getMyOwnTabs(Context cont) throws JSONException, IOException, URISyntaxException, NotLoginException {
 		String userid = cont.getSharedPreferences(preferenceFileName, Context.MODE_PRIVATE).getString("user_id", null);
 		if (userid != null) {
 			JSONObject obj = getResult("http://tab.do/api/1/users/" + userid + "/streams.json");
@@ -109,7 +110,7 @@ public class TabLib {
 			}
 			return new TabBasicList(obj);
 		} else {
-			return null;
+			throw new NotLoginException();
 		}
 	}
 	
