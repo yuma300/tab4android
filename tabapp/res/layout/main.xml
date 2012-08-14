@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    >
+<ProgressBar android:id="@+id/mapprogress" android:layout_height="wrap_content" style="@android:style/Widget.ProgressBar.Horizontal" android:layout_width="match_parent" android:minHeight="5sp"></ProgressBar>
+<EditText
+    android:id="@+id/filter"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:ems="10"
+    android:maxLines="1">
+</EditText>
+
+<FrameLayout
+    android:id="@+id/itemlayout"
+    android:layout_width="fill_parent"
+    android:layout_height="250dp"
+    android:minHeight="30dp" >
+
+<!--    <com.wondershelf.tabandroid.TabAppMapView
+        android:id="@+id/map"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_weight="1"
+        android:apiKey="0uhEmetKs3ihtxyxLgDmgOv3t33aCL5gwpVWpOw" >
+    </com.wondershelf.tabandroid.TabAppMapView>-->
+<com.wondershelf.tabandroid.TabAppMapView
+    android:id="@+id/map"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:apiKey="0z6XONTbOaH659evCnggbD9vQwK2acjS_1_nQMg" android:layout_weight="1"/>
+    <ImageButton
+        android:id="@+id/slider"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@null"
+        android:src="@drawable/slider" android:layout_gravity="bottom|center_horizontal"/>
+
+</FrameLayout>
+
+ <ListView
+     android:id="@+id/appitemlist"
+     android:layout_width="match_parent"
+     android:layout_height="match_parent" >
+ </ListView>
+
+</LinearLayout>

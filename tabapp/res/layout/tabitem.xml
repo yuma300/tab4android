@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+	<ProgressBar android:id="@+id/itemprogress" android:layout_height="wrap_content" style="@android:style/Widget.ProgressBar.Horizontal" android:layout_width="match_parent" android:minHeight="5sp"></ProgressBar>
+
+	    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+    >
+	        <LinearLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:orientation="vertical"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+        android:layout_marginBottom="20sp">
+	<TextView
+	    android:id="@+id/itemdetailtitle"
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:text="Large Text"
+	    android:textAppearance="?android:attr/textAppearanceLarge" android:layout_marginBottom="15sp"/>
+
+	<LinearLayout
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content" android:layout_marginBottom="15sp">
+
+		<ImageView
+		    android:id="@+id/usericon"
+		    android:layout_width="100px"
+		    android:layout_height="100px"
+		    android:src="@drawable/sloading"/>
+
+		<TextView
+		    android:id="@+id/username"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:text="Large Text"
+		    android:textAppearance="?android:attr/textAppearanceLarge" />
+
+	</LinearLayout>
+
+	<LinearLayout
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content" 
+	        android:orientation="vertical"
+	    android:layout_marginBottom="15sp">
+
+		<ImageView
+		    android:id="@+id/itemimage"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:src="@drawable/loading" android:layout_marginRight="5sp"/>
+
+		<TextView
+		    android:id="@+id/itemdescription"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:text="Medium Text"
+		    android:textAppearance="?android:attr/textAppearanceMedium" />
+
+	</LinearLayout>
+
+	<TextView
+	    android:id="@+id/textView1"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:text="コメント"
+	    android:textAppearance="?android:attr/textAppearanceLarge" />
+
+	<LinearLayout
+		    android:id="@+id/commentlayout"
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:orientation="vertical" >
+	</LinearLayout>
+
+</LinearLayout>
+</ScrollView>
+</LinearLayout>

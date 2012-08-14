@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" android:layout_weight="1">
+
+        <CheckBox
+            android:id="@+id/zoomreload"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="地図を拡大縮小したら自動的に更新" />
+        <CheckBox
+            android:id="@+id/movereload"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="地図を移動したら自動的に更新"/>
+
+        <CheckBox
+            android:id="@+id/filter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="フィルター入力欄を表示" />
+
+        </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/textView1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="このTab4Androidは、tabのAPIを利用していますが、Tonchidot Corporationは承認または認定をしておりません \nご意見等は以下へお願いします。"
+            android:textAppearance="?android:attr/textAppearanceMedium" android:layout_weight="1"/>
+
+        <Button
+            android:id="@+id/mailbutton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="メールを送る" />
+
+    </LinearLayout>
+
+</LinearLayout>

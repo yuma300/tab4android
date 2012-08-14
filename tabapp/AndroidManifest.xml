@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+	package="com.wondershelf.tabandroid"
+	android:sharedUserId="com.wondershelf"
+	android:versionCode="2"
+	android:versionName="1.1.0" >
+
+	<uses-sdk android:minSdkVersion="8" />
+
+	<application android:icon="@drawable/ic_launcher" android:label="@string/app_name" android:theme="@android:style/Theme.NoTitleBar">
+		<activity android:name=".TabAppActivity" android:label="@string/app_name" android:launchMode="singleTask" android:configChanges="orientation|keyboardHidden">
+			<intent-filter>
+			<action android:name="android.intent.action.MAIN" />
+			<category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+	<uses-library android:name="com.google.android.maps" />
+	<activity android:name="TabItemWebActivity" android:configChanges="orientation|keyboardHidden"></activity>
+	<activity android:name="TabAppSettingActivity" android:configChanges="orientation|keyboardHidden"></activity>
+	<activity android:name="com.wondershelf.tabandroid.TabAppSearchActivity" android:configChanges="orientation|keyboardHidden"></activity>
+	<activity android:name="TabAppItemActivity" android:configChanges="orientation|keyboardHidden"></activity>
+	<activity android:name="TabAppAuthActivity"></activity>
+	<activity android:name="TabAppProfileActivity"></activity>
+</application>
+		<uses-permission android:name="android.permission.INTERNET" />
+<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+  <uses-permission android:name="android.permission.ACCESS_MOCK_LOCATION"/>
+</manifest>

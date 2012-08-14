@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    >
+	<ProgressBar android:id="@+id/searchprogress" android:layout_height="wrap_content" style="@android:style/Widget.ProgressBar.Horizontal" android:layout_width="match_parent" android:minHeight="5sp"></ProgressBar>
+
+	<LinearLayout
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content" >
+
+		<Button
+		    android:id="@+id/button1"
+		    style="?android:attr/buttonStyleSmall"
+		    android:layout_width="match_parent"
+		    android:layout_height="wrap_content"
+		    android:layout_weight="1"
+		    android:text="作成したtab" />
+
+		<Button
+		    android:id="@+id/button2"
+		    style="?android:attr/buttonStyleSmall"
+		    android:layout_width="match_parent"
+		    android:layout_height="wrap_content"
+		    android:layout_weight="1"
+		    android:text="フォローしているtab" />
+
+	</LinearLayout>
+
+    <ListView
+        android:id="@+id/itemlist"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+    </ListView>
+
+</LinearLayout>
