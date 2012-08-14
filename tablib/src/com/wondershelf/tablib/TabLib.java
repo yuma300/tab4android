@@ -88,18 +88,13 @@ public class TabLib {
 		}
 	}
 
-/*	public TabPagenatedItems getMyFollowingItems(Context cont) throws JSONException, IOException, URISyntaxException {
-		String userid = cont.getSharedPreferences(preferenceFileName, Context.MODE_PRIVATE).getString("user_id", null);
-		if (userid != null) {
-			JSONObject obj = getResult("http://tab.do/api/1/users/" + userid + "/items.json");
-			if (obj == null) {
-				return null;
-			}
-			return new TabPagenatedItems(obj);
-		} else {
+	public TabPagenatedItems getItemsStream(String stream_id) throws JSONException, IOException, URISyntaxException {
+		JSONObject obj = getResult("http://tab.do/api/1/streams/" + stream_id + "/items.json?sort=recent");
+		if (obj == null) {
 			return null;
 		}
-	}*/
+		return new TabPagenatedItems(obj);
+	}
 
 	public TabBasicList getMyOwnTabs(Context cont) throws JSONException, IOException, URISyntaxException, NotLoginException {
 		String userid = cont.getSharedPreferences(preferenceFileName, Context.MODE_PRIVATE).getString("user_id", null);
@@ -113,7 +108,20 @@ public class TabLib {
 			throw new NotLoginException();
 		}
 	}
-	
+
+	public TabBasicList getMyFollowTabs(Context cont) throws JSONException, IOException, URISyntaxException, NotLoginException {
+		String userid = cont.getSharedPreferences(preferenceFileName, Context.MODE_PRIVATE).getString("user_id", null);
+		if (userid != null) {
+			JSONObject obj = getResult("http://tab.do/api/1/users/" + userid + "/following/streams.json");
+			if (obj == null) {
+				return null;
+			}
+			return new TabBasicList(obj);
+		} else {
+			throw new NotLoginException();
+		}
+	}
+
 	public TabPagenatedComments getComments(String itemid) throws IOException, URISyntaxException, JSONException {
 		JSONObject obj = getResult("http://tab.do/api/1/items/"+itemid+"/comments.json");
 		if (obj == null) {

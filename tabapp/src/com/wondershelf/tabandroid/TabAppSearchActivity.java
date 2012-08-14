@@ -3,6 +3,7 @@ package com.wondershelf.tabandroid;
 
 import java.io.IOException;
 
+
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -23,24 +24,18 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.KeyEvent;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnKeyListener;
-import android.view.ViewGroup;
-import android.view.WindowManager.LayoutParams;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 
 public class TabAppSearchActivity extends Activity implements OnClickListener, OnItemClickListener{
 	Button mSearch = null;
@@ -189,7 +184,7 @@ public class TabAppSearchActivity extends Activity implements OnClickListener, O
 
 	
 	
-	public class GetItemsTask extends AsyncTask<Integer, Integer, Integer> implements com.wondershelf.tablib.OnProgressListener{
+	private class GetItemsTask extends AsyncTask<Integer, Integer, Integer> implements com.wondershelf.tablib.OnProgressListener{
 		String mSearchWord = null;
 		Context mCont = null;
 		public GetItemsTask(Context cont, String word) {
@@ -213,9 +208,6 @@ public class TabAppSearchActivity extends Activity implements OnClickListener, O
 				TabLib tlib = new TabLib();
 				tlib.setOnProgressListener(this);
 				mItems = tlib.getItemsSearch(mSearchWord);
-				for (int i = 0; i < mItems.getItems().size(); i++) {
-					TabPagenatedItem tabitem = mItems.getItems().get(i);
-				}
 			} catch (Exception e) {
 				e.printStackTrace();
 				ret = 1;

@@ -36,7 +36,7 @@ public class TabStreamAdapter extends ArrayAdapter {
 	}
 
 	
-	public TabStream getTabPagenatedItem(int index) {
+	public TabStream getTabStream(int index) {
 		return items.get(index);
 	}
 

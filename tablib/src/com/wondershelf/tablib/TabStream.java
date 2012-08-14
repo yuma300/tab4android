@@ -28,4 +28,8 @@ public class TabStream {
 		return tabstream;
 	}
 
+	public String getItemID() throws JSONException {
+		return tabstream.getString("id");
+	}
+
 }

@@ -21,6 +21,7 @@
 	<activity android:name="TabAppItemActivity" android:configChanges="orientation|keyboardHidden"></activity>
 	<activity android:name="TabAppAuthActivity"></activity>
 	<activity android:name="TabAppProfileActivity"></activity>
+	<activity android:name="TabAppStreamActivity"></activity>
 </application>
 		<uses-permission android:name="android.permission.INTERNET" />
 <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>

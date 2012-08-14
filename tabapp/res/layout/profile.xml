@@ -8,22 +8,25 @@
 
 	<LinearLayout
 	    android:layout_width="match_parent"
-	    android:layout_height="wrap_content" >
+	    android:layout_height="wrap_content"
+	    android:minHeight="40sp" >
 
 		<Button
-		    android:id="@+id/button1"
-		    style="?android:attr/buttonStyleSmall"
+		    android:id="@+id/own"
 		    android:layout_width="match_parent"
-		    android:layout_height="wrap_content"
+		    android:layout_height="fill_parent"
+		    android:layout_margin="3sp"
 		    android:layout_weight="1"
+		    android:background="@drawable/color_stateful"
 		    android:text="作成したtab" />
 
 		<Button
-		    android:id="@+id/button2"
-		    style="?android:attr/buttonStyleSmall"
+		    android:id="@+id/follow"
 		    android:layout_width="match_parent"
-		    android:layout_height="wrap_content"
+		    android:layout_height="fill_parent"
+		    android:layout_margin="3sp"
 		    android:layout_weight="1"
+		    android:background="@drawable/color_stateful"
 		    android:text="フォローしているtab" />
 
 	</LinearLayout>
