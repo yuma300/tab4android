@@ -62,4 +62,9 @@ public class TabPagenatedItem {
 	public String getItemID() throws JSONException {
 		return tabitem.getString("id");
 	}
+	
+	public TabStream getStream() throws JSONException {
+		TabStream stream = new TabStream(tabitem.getJSONObject("stream"));
+		return stream;
+	}
 }

@@ -33,6 +33,8 @@ import org.apache.http.util.EntityUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.wondershelf.tablib.misc.SharedPreferenceUtils;
+
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
@@ -42,9 +44,13 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 public class TabAppAuthWebViewClient extends WebViewClient {
-	final private static String preferenceFileName = "user_info";
-
 	//ページの読み込み開始
+	OnAuthListener mListener = null;
+	
+	public void setOnAuthListener(OnAuthListener l) {
+		mListener = l;
+	}
+	
 	@Override
 	public void onPageStarted(WebView view, String url, Bitmap favicon) {
 		if (url.contains("error")) {
@@ -61,13 +67,23 @@ public class TabAppAuthWebViewClient extends WebViewClient {
 				JSONObject obje = new JSONObject(body);
 				String access_token = obje.getString("access_token");
 				String refresh_token = obje.getString("refresh_token");
-				setStringPreference(view.getContext(), "access_token", access_token);
-				setStringPreference(view.getContext(), "refresh_token", refresh_token);
+				
+				SharedPreferenceUtils sutil = new SharedPreferenceUtils();
+
+				
+				sutil.setStringPreference(view.getContext(), "access_token", access_token);
+				sutil.setStringPreference(view.getContext(), "refresh_token", refresh_token);
 				JSONObject infojson = getResult("http://tab.do/api/1/users/me.json", access_token);
-				setStringPreference(view.getContext(), "user_id", infojson.getJSONObject("user").getString("id"));
+				sutil.setStringPreference(view.getContext(), "user_id", infojson.getJSONObject("user").getString("id"));
+				if (mListener != null) {
+					TabAccount account = new TabAccount(infojson.getJSONObject("user").getString("id"));
+					mListener.onSuccesLogin(account);
+				}
 			} catch (Exception e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
+				if (mListener != null) {
+					mListener.onFailLogin();
+				}
 			}
 		}
 	}
@@ -82,8 +98,6 @@ public class TabAppAuthWebViewClient extends WebViewClient {
 				method.setHeader(headers[i][0], headers[i][1]);
 			}
 		}
-		//method.setHeader("Cookie", CookieManager.getInstance().getCookie(mUrlManager.mInitialURL));
-		//method.setHeader("Cookie", CookieManager.getInstance().getCookie(mUrlManager.mSSLHomeURL));
 
 		if (params != null) {
 			method.setEntity(new UrlEncodedFormEntity(params, HTTP.UTF_8));
@@ -169,17 +183,5 @@ public class TabAppAuthWebViewClient extends WebViewClient {
 			}
 		}
 		return rootObject;
-	}
-	
-	/**
-	 * AndroidのsharedPrefenceに文字列をセットする
-	 * @param cont Context
-	 * @param itemname sharedPrefenceにセットするキー
-	 * @param value キーに対応する文字列
-	 */
-	private void setStringPreference(Context cont, String itemname, String value) {
-		SharedPreferences.Editor editor = cont.getSharedPreferences(preferenceFileName, Context.MODE_PRIVATE).edit();
-		editor.putString(itemname, value);
-		editor.commit();
 	}
 }

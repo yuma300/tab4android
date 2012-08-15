@@ -11,6 +11,7 @@ import java.util.ArrayList;
 
 import org.json.JSONException;
 
+import com.wondershelf.misc.SBDialogManager;
 import com.wondershelf.tabandroid.TabAppSearchActivity.SetImageTask;
 import com.wondershelf.tablib.TabBasicList;
 import com.wondershelf.tablib.TabLib;
@@ -25,6 +26,8 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
@@ -55,6 +58,7 @@ public class TabAppStreamActivity extends Activity implements OnItemClickListene
 		
 		mPbar = (ProgressBar)findViewById(R.id.searchprogress);
 		mPbar.setMax(100);
+		executeTask();
 	}
 
 	private void executeTask() {
@@ -67,8 +71,6 @@ public class TabAppStreamActivity extends Activity implements OnItemClickListene
 			mTask.execute(0);
 		}
 	}
-
-
 	
 	private class GetItemsTask extends AsyncTask<Integer, Integer, Integer> implements com.wondershelf.tablib.OnProgressListener{
 		Context mCont = null;
@@ -119,6 +121,7 @@ public class TabAppStreamActivity extends Activity implements OnItemClickListene
 		protected Integer doInBackground(Integer... arg0) {
 			int ret= 0;
 			try {
+				publishProgress(10);
 				TabLib tlib = new TabLib();
 				tlib.setOnProgressListener(this);
 				mItems = tlib.getItemsStream(mId);
@@ -136,6 +139,7 @@ public class TabAppStreamActivity extends Activity implements OnItemClickListene
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
+					publishProgress(50 + 40 * i / mItems.getItems().size());
 				}
 			
 			} catch (Exception e) {
@@ -155,18 +159,47 @@ public class TabAppStreamActivity extends Activity implements OnItemClickListene
 		@Override  
 		protected void onPostExecute(Integer result) {
 			mPbar.setProgress(100);
-			adapter.setBitmap(mBitmaps);
-			adapter.notifyDataSetChanged();
+			if (adapter != null) {
+				adapter.setBitmap(mBitmaps);
+				adapter.notifyDataSetChanged();
+			}
 		}
 
 		@Override
 		public void onProgress(int progress) {
-			// TODO Auto-generated method stub
+			publishProgress(progress / 2);
 			
 		}
 
 	}
 
+	public boolean onCreateOptionsMenu(Menu menu) {
+		boolean ret = super.onCreateOptionsMenu(menu);
+		menu.add(0 , Menu.FIRST , Menu.NONE , "共有");
+		return ret;
+	}
+
+	public boolean onOptionsItemSelected(MenuItem item) {
+		if (item.getItemId() == Menu.FIRST) {
+			if (mItems != null) {
+				Intent intent = new Intent(android.content.Intent.ACTION_SEND);
+				intent.setType("text/plain");
+				String title = "";
+				try {
+					title = mItems.getItems().get(0).getStream().getTitle();
+				} catch (JSONException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				intent.putExtra(Intent.EXTRA_TEXT, title + " http://tab.do/streams/" + mId + " #tab_do");
+				startActivity(intent);
+			} else {
+				SBDialogManager.showOKDialog(this, "エラー", "アイテム情報を読み込み中です", null);
+			}
+		}
+		return super.onOptionsItemSelected(item);
+	}
+	
 	@Override
 	public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
 		// TODO Auto-generated method stub
@@ -185,7 +218,6 @@ public class TabAppStreamActivity extends Activity implements OnItemClickListene
 	@Override
 	protected void onResume() {
 		super.onResume();
-		executeTask();
 	}
 
 	@Override

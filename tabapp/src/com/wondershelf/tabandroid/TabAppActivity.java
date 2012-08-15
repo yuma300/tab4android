@@ -621,8 +621,7 @@ public class TabAppActivity extends MapActivity implements LocationListener, OnI
 		menu.add(0 , Menu.FIRST +1, Menu.NONE , "更新");
 		menu.add(0 , Menu.FIRST +2, Menu.NONE , "検索");
 		menu.add(0 , Menu.FIRST + 3 ,Menu.NONE , "設定");
-		menu.add(0 , Menu.FIRST + 4 ,Menu.NONE , "ログイン");
-		menu.add(0 , Menu.FIRST + 5 ,Menu.NONE , "プロファイル");
+		menu.add(0 , Menu.FIRST + 4 ,Menu.NONE , "プロファイル");
 		return ret;
 	}
 	
@@ -656,9 +655,6 @@ public class TabAppActivity extends MapActivity implements LocationListener, OnI
 			Intent intent = new Intent(this, TabAppSettingActivity.class);
 			startActivity(intent);
 		} else if (item.getItemId() == Menu.FIRST + 4) {
-			Intent intent = new Intent(this, TabAppAuthActivity.class);
-			startActivity(intent);
-		} else if (item.getItemId() == Menu.FIRST + 5) {
 			Intent intent = new Intent(this, TabAppProfileActivity.class);
 			startActivity(intent);
 		}

@@ -10,18 +10,29 @@ import java.net.URLConnection;
 import java.util.ArrayList;
 
 import org.json.JSONException;
+import org.json.JSONObject;
 
+import com.google.android.maps.GeoPoint;
+import com.wondershelf.misc.SBDialogManager;
 import com.wondershelf.tablib.TabBasicList;
 import com.wondershelf.tablib.TabLib;
 import com.wondershelf.tablib.TabStream;
+import com.wondershelf.tablib.auth.TabAppAuth;
+import com.wondershelf.tablib.misc.NotLoginException;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.location.Criteria;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
@@ -39,6 +50,8 @@ public class TabAppProfileActivity extends Activity implements OnClickListener, 
 	private ProgressBar mPbar = null;
 	TabBasicList mItems;
 	GetStreamsTask mTask = null;
+
+	String mId = null;
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -51,35 +64,16 @@ public class TabAppProfileActivity extends Activity implements OnClickListener, 
 		
 		mOwn = (Button)findViewById(R.id.own);
 		mOwn.setOnClickListener(this);
+		mOwn.setBackgroundColor(Color.CYAN);
+		mOwn.setTag(R.id.selected, true);
 
 		mFollow = (Button)this.findViewById(R.id.follow);
 		mFollow.setOnClickListener(this);
-		
+		mFollow.setTag(R.id.selected, false);
+
 		mPbar = (ProgressBar)findViewById(R.id.searchprogress);
-		
-/*		TabLib lib = new TabLib();
-		try {
-			TabBasicList items;
-			items = lib.getMyOwnTabs(this);
 
-			adapter = new TabStreamAdapter(this, R.layout.searchlistitem, items.getItems());
-			itemlist.setAdapter((ArrayAdapter)adapter);
-
-		} catch (JSONException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (URISyntaxException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (NotLoginException e) {
-			//ログインしていない
-			Intent intent = new Intent(this, TabAppAuthActivity.class);
-			startActivity(intent);
-			e.printStackTrace();
-		}*/
+		executeTask(0);
 	}
 	
 	private void executeTask(int mode) {
@@ -169,6 +163,9 @@ public class TabAppProfileActivity extends Activity implements OnClickListener, 
 					}
 				}*/
 			
+			}catch (NotLoginException e){
+				e.printStackTrace();
+				ret = -1;
 			} catch (Exception e) {
 				e.printStackTrace();
 				ret = 1;
@@ -187,6 +184,13 @@ public class TabAppProfileActivity extends Activity implements OnClickListener, 
 		@Override  
 		protected void onPostExecute(Integer result) {
 			mPbar.setProgress(100);
+			if (result == -1) {
+				//ログインできていない
+				Intent intent = new Intent(mCont, TabAppAuthActivity.class);
+				((Activity) mCont).startActivityForResult (intent, 0);
+
+				return;
+			}
 			//adapter.setBitmap(mBitmaps);
 			//adapter.notifyDataSetChanged();
 		}
@@ -199,6 +203,21 @@ public class TabAppProfileActivity extends Activity implements OnClickListener, 
 
 	}
 
+	public boolean onCreateOptionsMenu(Menu menu) {
+		boolean ret = super.onCreateOptionsMenu(menu);
+		menu.add(0 , Menu.FIRST , Menu.NONE , "ログアウト");
+		return ret;
+	}
+	
+	public boolean onOptionsItemSelected(MenuItem item) {
+		if (item.getItemId() == Menu.FIRST) {
+			TabAppAuth auth = new TabAppAuth();
+			auth.logout(this);
+		}
+		return super.onOptionsItemSelected(item);
+	}
+
+	
 	@Override
 	public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
 		// TODO Auto-generated method stub
@@ -216,9 +235,14 @@ public class TabAppProfileActivity extends Activity implements OnClickListener, 
 	}
 	
 	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		executeTask(0);
+	}
+	
+	@Override
 	protected void onResume() {
 		super.onResume();
-		executeTask(0);
 	}
 
 	@Override
@@ -231,9 +255,17 @@ public class TabAppProfileActivity extends Activity implements OnClickListener, 
 
 	@Override
 	public void onClick(View arg0) {
-		if (arg0.equals(mOwn)) {
-			
-		} else if (arg0.equals(mFollow)) {
+		if (arg0.equals(mOwn) && !(Boolean)mOwn.getTag(R.id.selected)) {
+			mOwn.setBackgroundColor(Color.CYAN);
+			mOwn.setTag(R.id.selected, true);
+			mFollow.setBackgroundResource(R.drawable.color_stateful);
+			mFollow.setTag(R.id.selected, false);
+			executeTask(0);
+		} else if (arg0.equals(mFollow) && !(Boolean)mFollow.getTag(R.id.selected)) {
+			mOwn.setBackgroundResource(R.drawable.color_stateful);
+			mOwn.setTag(R.id.selected, false);
+			mFollow.setBackgroundColor(Color.CYAN);
+			mFollow.setTag(R.id.selected, true);
 			executeTask(1);
 		}
 	}
