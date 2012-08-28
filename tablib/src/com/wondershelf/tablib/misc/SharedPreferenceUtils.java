@@ -15,4 +15,8 @@ public class SharedPreferenceUtils {
 		editor.putString(key, value);
 		editor.commit();
 	}
+	
+	public String getStringPreference(Context cont, String key) {
+		return cont.getSharedPreferences(preferenceFileName, Context.MODE_PRIVATE).getString(key, null);
+	}
 }

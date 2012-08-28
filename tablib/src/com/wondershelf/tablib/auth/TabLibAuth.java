@@ -9,9 +9,24 @@ import android.webkit.CookieManager;
 import android.webkit.CookieSyncManager;
 import android.webkit.WebView;
 
-public class TabAppAuth {
+public class TabLibAuth {
 	
 	String id;
+	
+	public TabAccount getMyAccount(Context cont) {
+		SharedPreferenceUtils util = new SharedPreferenceUtils();
+		String myid = util.getStringPreference(cont, "user_id");
+		if (myid != null) {
+			return new TabAccount(myid);
+		} else {
+			return null;
+		}
+	}
+	
+	public String getMyId(Context cont) {
+		SharedPreferenceUtils util = new SharedPreferenceUtils();
+		return util.getStringPreference(cont, "user_id");
+	}
 	
 	public void login(WebView web) {
 		web.setWebViewClient(new TabAppAuthWebViewClient());
