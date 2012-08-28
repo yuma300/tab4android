@@ -2,6 +2,7 @@ package com.wondershelf.tabandroid;
 
 import java.io.IOException;
 
+
 import java.io.InputStream;
 
 import java.net.HttpURLConnection;
@@ -10,27 +11,20 @@ import java.net.URLConnection;
 import java.util.ArrayList;
 
 import org.json.JSONException;
-import org.json.JSONObject;
-
-import com.google.android.maps.GeoPoint;
-import com.wondershelf.misc.SBDialogManager;
 import com.wondershelf.tablib.TabBasicList;
 import com.wondershelf.tablib.TabLib;
 import com.wondershelf.tablib.TabStream;
-import com.wondershelf.tablib.auth.TabAppAuth;
+import com.wondershelf.tablib.auth.TabLibAuth;
 import com.wondershelf.tablib.misc.NotLoginException;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
-import android.location.Criteria;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -48,10 +42,10 @@ public class TabAppProfileActivity extends Activity implements OnClickListener, 
 	private Button mOwn = null;
 	private Button mFollow = null;
 	private ProgressBar mPbar = null;
+	private String mId = null;
 	TabBasicList mItems;
 	GetStreamsTask mTask = null;
 
-	String mId = null;
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -77,6 +71,8 @@ public class TabAppProfileActivity extends Activity implements OnClickListener, 
 	}
 	
 	private void executeTask(int mode) {
+		Intent intent = this.getIntent();
+		mId = intent.getStringExtra("userid");
 		if (mTask != null && mTask.getStatus() == AsyncTask.Status.RUNNING) {
 			mTask.cancel(true);
 			mTask = new GetStreamsTask(this, mode);
@@ -142,9 +138,9 @@ public class TabAppProfileActivity extends Activity implements OnClickListener, 
 				TabLib tlib = new TabLib();
 				tlib.setOnProgressListener(this);
 				if (mMode == 0) {
-					mItems = tlib.getMyOwnTabs(mCont);
+					mItems = tlib.getOwnTabs(mCont, mId);
 				} else {
-					mItems = tlib.getMyFollowTabs(mCont);
+					mItems = tlib.getFollowTabs(mCont, mId);
 
 				}
 				publishProgress(50);
@@ -211,7 +207,7 @@ public class TabAppProfileActivity extends Activity implements OnClickListener, 
 	
 	public boolean onOptionsItemSelected(MenuItem item) {
 		if (item.getItemId() == Menu.FIRST) {
-			TabAppAuth auth = new TabAppAuth();
+			TabLibAuth auth = new TabLibAuth();
 			auth.logout(this);
 		}
 		return super.onOptionsItemSelected(item);

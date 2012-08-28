@@ -7,12 +7,12 @@ import org.json.JSONObject;
 public class TabBasicItem {
 	JSONObject tabitem = null;
 	JSONObject mItem = null;
-	JSONObject mUser = null;
+	TabUser mUser = null;
 	
 	public TabBasicItem(JSONObject item) throws JSONException {
 		tabitem = item;
 		mItem = tabitem.getJSONObject("item");
-		mUser = mItem.getJSONObject("user");
+		mUser = new TabUser(mItem.getJSONObject("user"));
 	}
 	
 	public JSONObject getJSONTabItem() {
@@ -67,12 +67,7 @@ public class TabBasicItem {
 		return mItem.getString("description");
 	}
 
-	public String getUserCropM1ImageURL() throws JSONException {
-		JSONObject itemimages = mUser.getJSONObject("profile_image_url");
-		return itemimages.getString("crop_M1");
-	}
-
-	public String getScreenName() throws JSONException {
-		return mUser.getString("screen_name");
+	public TabUser getTabUser() {
+		return mUser;
 	}
 }

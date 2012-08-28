@@ -29,6 +29,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -36,7 +37,7 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-public class TabAppItemActivity extends Activity {
+public class TabAppItemActivity extends Activity implements OnClickListener{
 
 	ImageView mUserIcon = null;
 	ImageView mItemImage = null;
@@ -45,17 +46,20 @@ public class TabAppItemActivity extends Activity {
 	TextView mItemTitle = null;
 
 	LinearLayout mComments = null;
+	LinearLayout muserLayout = null;
+
 	ProgressBar mPbar = null;
 	TabBasicItem mItem = null;
 	String mId = null;
 	SetDetailTask task = null;
+	String mUserId = null;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.tabitem);
 		
-		mUserIcon = (ImageView)findViewById(R.id.usericon);
+		mUserIcon = (ImageView)findViewById(R.id.usericon);		
 		mItemImage = (ImageView)findViewById(R.id.itemimage);
 		mUserName = (TextView)findViewById(R.id.username);
 		mItemDesc = (TextView)findViewById(R.id.itemdescription);
@@ -63,7 +67,9 @@ public class TabAppItemActivity extends Activity {
 		mPbar = (ProgressBar)findViewById(R.id.itemprogress);
 		mPbar.setMax(100);
 		
-		
+		muserLayout = (LinearLayout)findViewById(R.id.userlayout);
+		muserLayout.setOnClickListener(this);
+
 		Intent intent = getIntent();
 		mId = intent.getStringExtra("ITEMID");
 		task = new SetDetailTask(this, mId);
@@ -152,10 +158,9 @@ public class TabAppItemActivity extends Activity {
 			if (progress[0] == -1) {
 				try {
 					mItemTitle.setText(mItem.getTitle());
-					mUserName.setText(mItem.getScreenName());
+					mUserName.setText(mItem.getTabUser().getScreenName());
 					mItemDesc.setText(mItem.getDescription());
 				} catch (Exception e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			} else if (progress[0] == -2) {
@@ -173,12 +178,13 @@ public class TabAppItemActivity extends Activity {
 			try {
 				publishProgress(10);
 				mItem = tablib.getAnItem(mId);
+				mUserId = mItem.getTabUser().getId();
 				publishProgress(-1);
 				publishProgress(50);
 				BitmapFactory.Options bmOptions;
 				bmOptions = new BitmapFactory.Options();
 				bmOptions.inSampleSize = 1;
-				mIcon = LoadImage(mItem.getUserCropM1ImageURL(), bmOptions);
+				mIcon = LoadImage(mItem.getTabUser().getUserCropM1ImageURL(), bmOptions);
 				publishProgress(70);
 				mImage = LoadImage(mItem.getItemCropM1ImageURL(), bmOptions);
 				publishProgress(-2);
@@ -226,76 +232,6 @@ public class TabAppItemActivity extends Activity {
 		}
 	}
 
-/*	public class SetCommentTask extends AsyncTask<Integer, Integer, Integer> {
-		String mId = null;
-		Context mCont = null;
-		TabPagenatedComments mComments = null;
-		Bitmap mIcon = null;
-		Bitmap mImage = null;
-		TabBasicItem mItem = null;
-		public SetCommentTask(Context cont, String id) {
-			mCont = cont;
-			mId = id;
-		}
-
-		public SetCommentTask() {
-			
-		}
-
-		@Override  
-		protected void onProgressUpdate(Integer... progress) {
-			mPbar.setProgress(progress[0]);
-		}
-
-		@Override
-		protected Integer doInBackground(Integer... arg0) {
-			int ret= 0;
-			TabLib tablib = new TabLib();
-			try {
-				publishProgress(10);
-				mItem = tablib.getAnItem(mId);
-				publishProgress(50);
-				BitmapFactory.Options bmOptions;
-				bmOptions = new BitmapFactory.Options();
-				bmOptions.inSampleSize = 1;
-				mIcon = LoadImage(mItem.getUserCropM1ImageURL(), bmOptions);
-				publishProgress(70);
-				mImage = LoadImage(mItem.getItemCropM2ImageURL(), bmOptions);
-				publishProgress(90);
-
-			
-			} catch (Exception e) {
-				ret = -1;
-			}
-			return ret;
-		}
-
-		@Override
-		protected void onPreExecute() {
-			mPbar.setProgress(100);
-		}
-		
-		@Override  
-		protected void onPostExecute(Integer result) {
-			if (result == 0) {
-				try {
-					mItemTitle.setText(mItem.getTitle());
-					mUserName.setText(mItem.getScreenName());
-					mItemDesc.setText(mItem.getDescription());
-					mUserIcon.setImageBitmap(mIcon);
-					mItemImage.setImageBitmap(mImage);
-					mPbar.setProgress(100);
-				} catch (JSONException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				
-			} else {
-				SBDialogManager.showOKDialog(mCont, "エラー", "データの取得ができませんでした。存在しないアイテムの可能性があります。", null);
-			}
-		}
-	}*/
-	
 	private Bitmap LoadImage(String URL, BitmapFactory.Options options) throws IOException {
 		Bitmap bitmap = null;
 		InputStream in = null;       
@@ -318,5 +254,16 @@ public class TabAppItemActivity extends Activity {
 			inputStream = httpConn.getInputStream();
 		}
 		return inputStream;
+	}
+
+	@Override
+	public void onClick(View arg0) {
+		if (arg0.equals(muserLayout) && mUserId != null) {
+			Intent intent = null;
+			intent = new Intent(this, TabAppProfileActivity.class);
+			intent.putExtra("userid", mUserId);
+			startActivity(intent);
+		}
+		
 	}
 }

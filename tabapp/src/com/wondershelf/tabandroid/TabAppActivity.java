@@ -65,6 +65,7 @@ import com.wondershelf.misc.SBDialogManager;
 import com.wondershelf.tablib.TabLib;
 import com.wondershelf.tablib.TabPagenatedItem;
 import com.wondershelf.tablib.TabPagenatedItems;
+import com.wondershelf.tablib.auth.TabLibAuth;
 
 
 public class TabAppActivity extends MapActivity implements LocationListener, OnItemClickListener, OnTouchListener{
@@ -655,7 +656,15 @@ public class TabAppActivity extends MapActivity implements LocationListener, OnI
 			Intent intent = new Intent(this, TabAppSettingActivity.class);
 			startActivity(intent);
 		} else if (item.getItemId() == Menu.FIRST + 4) {
-			Intent intent = new Intent(this, TabAppProfileActivity.class);
+			TabLibAuth auth = new TabLibAuth();
+			String myid = auth.getMyId(this);
+			Intent intent = null;
+			if (myid != null) {
+				intent = new Intent(this, TabAppProfileActivity.class);
+				intent.putExtra("userid", myid);
+			} else {
+				intent = new Intent(this, TabAppAuthActivity.class);
+			}
 			startActivity(intent);
 		}
 		return super.onOptionsItemSelected(item);
